@@ -1,0 +1,33 @@
+# dirs
+/.idea
+/.logs
+/upload
+/bitrix
+/*.html
+/*.db
+/*.sql
+/*.txt
+/*.log
+/*.xml
+*.html
+*.log
+*.log.old
+*.sqlite
+*.txt
+*.csv
+*.dt
+*.session
+*.lock
+*.tar
+*.tar.gz
+*.zip
+.local
+/.htaccess
+.DS_Store
+
+# my
+/test
+*.phar
+*.patch
+console.php
+auth.php
