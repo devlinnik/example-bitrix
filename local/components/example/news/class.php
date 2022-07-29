@@ -6,10 +6,9 @@ use Bitrix\Main\ArgumentException;
 use Bitrix\Main\Loader;
 use Bitrix\Iblock\ElementTable;
 use Bitrix\Iblock\IblockTable;
+use Bitrix\Main\LoaderException;
 use Bitrix\Main\ObjectPropertyException;
 use Bitrix\Main\SystemException;
-
-Bitrix\Main\Loader::includeModule('iblock');
 
 
 /**
@@ -27,26 +26,70 @@ class ExampleNews extends CBitrixComponent
     }
 
     /**
+     * @throws LoaderException
+     * @throws ArgumentException
      * @throws ObjectPropertyException
      * @throws SystemException
-     * @throws ArgumentException
      */
-    public static function listNews($iblockCode, $elementsLimit): array
+    public function listNews(): array
     {
-        $arIblock = IblockTable::getList(array(
-            'filter' => array('CODE' => $iblockCode)
-        ))->fetch();
 
-        return ElementTable::getList(array(
+        Bitrix\Main\Loader::includeModule('iblock');
+
+        $arFilter = ['IBLOCK_ID' => 1];
+
+        $arParams = array(
             'order' => array('SORT' => 'ASC'),
             'select' =>  array('ID', 'SORT', 'NAME', 'PREVIEW_PICTURE', 'PREVIEW_TEXT', 'DETAIL_PICTURE', 'DETAIL_TEXT'),
-            'filter' => array('IBLOCK_ID' => $arIblock['ID']),
-            'limit' => $elementsLimit,
-            'cache' => array(
-                'ttl' => 3600,
-                'cache_joins' => true
-            ),
-        ))->fetchAll();
+            'filter' => $arFilter,
+            'count_total' => true,
+            'offset' => $this->arResult['NAV']->getOffset(),
+            'limit' => $this->arResult['NAV']->getLimit()
+        );
+        $cacheTtl = 86400;
+
+        $obCache = new CPHPCache();
+
+        $result = array();
+
+        if ($obCache->InitCache($cacheTtl, serialize($arParams), '/example/news/'))
+        {
+            $result = $obCache->GetVars();
+        }
+        elseif ($obCache->StartDataCache()) {
+            $this->arResult['NAV']->allowAllRecords(true)->setPageSize(1)->initFromUri();
+
+            $arItems =  ElementTable::getList(array(
+                'order' => array('SORT' => 'ASC'),
+                'select' =>  array('ID', 'SORT', 'NAME', 'PREVIEW_PICTURE', 'PREVIEW_TEXT', 'DETAIL_PICTURE', 'DETAIL_TEXT'),
+                'filter' => [
+                    "=IBLOCK_ID" => 1
+                ],
+                'count_total' => true,
+                'offset' => $this->arResult['NAV']->getOffset(),
+                'limit' => $this->arResult['NAV']->getLimit()
+            ));
+
+            $this->arResult['NAV']->setRecordCount($arItems->getCount());
+
+            while($row = $arItems->fetch())
+            {
+                $result[$row['ID']]['ID'] = $row["ID"];
+                $result[$row['ID']]['NAME'] = $row["NAME"];
+                $result[$row['ID']]['PREVIEW_TEXT'] = $row["PREVIEW_TEXT"];
+            }
+
+            if (defined('BX_COMP_MANAGED_CACHE')) {
+                global $CACHE_MANAGER;
+                $CACHE_MANAGER->StartTagCache('/example/news/');
+                $CACHE_MANAGER->RegisterTag('iblock_id_' . $arFilter['IBLOCK_ID']);
+                $CACHE_MANAGER->EndTagCache();
+            }
+            $obCache->EndDataCache($result);
+        }
+
+        return $result;
+
     }
 
     /**
@@ -54,11 +97,12 @@ class ExampleNews extends CBitrixComponent
      * @throws ArgumentException
      * @throws ObjectPropertyException
      * @throws SystemException
+     * @throws LoaderException
      */
     public function executeComponent(): void
     {
-        $this->arResult['ITEMS'] = $this->listNews($this->arParams['IBLOCK_USE_CODE'],
-            $this->arParams['ELEMENTS_LIMIT']);
+        $this->arResult['NAV'] = new Bitrix\Main\UI\PageNavigation("navigation");
+        $this->arResult['ITEMS'] = $this->listNews();
         $this->includeComponentTemplate();
     }
 }
