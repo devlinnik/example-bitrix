@@ -25,9 +25,11 @@ Loc::loadMessages(__FILE__);
     <?php   $APPLICATION->ShowHead();
             Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/bootstrap.min.css');
             Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/bootstrap-utilities.min.css');
+            Asset::getInstance()->addCss(SITE_TEMPLATE_PATH . '/css/custom.css');
 
             Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/bootstrap.min.js');
             Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/bootstrap.bundle.min.js');
+            Asset::getInstance()->addJs(SITE_TEMPLATE_PATH . '/js/custom.js');
     ?>
 </head>
 <body>
