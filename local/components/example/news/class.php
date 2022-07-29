@@ -7,5 +7,21 @@ if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true) die();
  */
 class ExampleNews extends CBitrixComponent
 {
+    /**
+     * @param $arParams
+     * @return array
+     */
+    public function onPrepareComponentParams($arParams): array
+    {
+        return $arParams;
+    }
 
+    /**
+     * @return void|null
+     */
+    public function executeComponent()
+    {
+        $this->arResult = "TEST ONE TWO";
+        $this->includeComponentTemplate();
+    }
 }
