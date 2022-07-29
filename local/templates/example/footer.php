@@ -9,6 +9,7 @@ if(!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true)
 use Bitrix\Main\Localization\Loc as Location;
 
 ?>
+</div>
 <footer class="footer">
     <div class="container-fluid">
         <span class="text-muted"><?=Location::getMessage('FOOTER_MESSAGE_1')?></span>
