@@ -2,26 +2,9 @@
 /.idea
 /.logs
 /upload
-/bitrix/cache
-/bitrix/managed_cache
-/bitrix/stack_cache
-/bitrix/updates
-/bitrix/tmp
-/bitrix/backup
-/bitrix/vendor
-/bitrix/wizards
-/bitrix/html_pages
-
-# bitrix config files
-/bitrix/php_interface/dbconn.php
-/bitrix/php_interface/after_connect.php
-/bitrix/php_interface/after_connect_d7.php
-/bitrix/.settings.php
-/bitrix/.settings_extra.php
-/bitrix/admin/.htaccess
+/bitrix
 
 # files
-/bitrix/themes/.default/modules.css
 /*.html
 /*.db
 /*.sql
