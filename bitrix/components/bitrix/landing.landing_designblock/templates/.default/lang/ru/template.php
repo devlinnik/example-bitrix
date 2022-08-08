@@ -1,7 +1,0 @@
-<?php
-$MESS['LANDING_TPL_START_PAGE_LOGO'] = 'Битрикс';
-$MESS['LANDING_TPL_START_PAGE_LOGO_SMN'] = 'Сайты';
-$MESS['LANDING_TPL_START_PAGE_LOGO_24'] = '24';
-$MESS['LANDING_TPL_FEEDBACK'] = 'Обратная связь';
-$MESS['LANDING_TPL_CLOSE'] = 'Закрыть';
-$MESS['LANDING_TPL_SAVE'] = 'Сохранить';

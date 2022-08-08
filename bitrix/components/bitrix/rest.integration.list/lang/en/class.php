@@ -1,3 +1,0 @@
-<?php
-$MESS["REST_INTEGRATION_INDEX_TITLE"] = "Integrations";
-$MESS["REST_INTEGRATION_LIST_ERROR_ACCESS_DENIED"] = "Access denied.";

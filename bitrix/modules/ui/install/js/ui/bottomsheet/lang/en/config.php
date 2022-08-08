@@ -1,3 +1,0 @@
-<?php
-$MESS["UI_BOTTOMSHEET_CLOSE"] = "Close";
-$MESS["UI_BOTTOMSHEET_HELP"] = "Help";
